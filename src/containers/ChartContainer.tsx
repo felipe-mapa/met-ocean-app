@@ -30,7 +30,7 @@ const ChartContainer = () => {
   return (
     <div style={{ textAlign: "center" }}>
       <Typography variant="body1" align="justify">
-        To begin you analyzes, select one of the following options from the
+        To begin your analysis, select one of the following options from the
         dropbox below:
       </Typography>
       {/* select column data */}
