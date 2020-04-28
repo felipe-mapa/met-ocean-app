@@ -1,7 +1,7 @@
 # METOCEAN APPLICATION
 Interactive metocean application to help marine professional to make decisions based on the weather.
 
-[DEMO]()
+[DEMO](http://felipepavanela78601.ipage.com/metocean/)
 
 ## How to run this app
 Clone project and install dependencies
@@ -15,6 +15,11 @@ Import 'metocean.sql' database
 Open another terminal tab and run backend server.
 ```
 $ php -S 127.0.0.1:8000
+```
+
+To build the app.
+```
+$ npm run build
 ```
 
 *if using XAMPP, make sure main directory (or just backend) is inside /xampp/htdocs
