@@ -13,21 +13,33 @@ const ChartContainer = () => {
 
   // set states
   const [columnSelected, setColumnSelected] = useState<string>();
+  const [isLoading, setIsLoading] = useState(true);
 
   // set inicial state for column
   useEffect(() => {
     setColumnSelected(columns[0].name);
+    setIsLoading(false)
   }, []);
+
+  useEffect(() => {
+    if(columnSelected !== undefined) {
+      setIsLoading(false)
+    }
+  }, [columnSelected])
 
   return (
     <div style={{ textAlign: "center" }}>
-      <Typography variant="body1" align="justify">To begin you analyzes, select one of the following options from the dropbox below:</Typography>
+      <Typography variant="body1" align="justify">
+        To begin you analyzes, select one of the following options from the
+        dropbox below:
+      </Typography>
       {/* select column data */}
       <select
         value={columnSelected}
         style={{ margin: "0 auto" }}
         onChange={(e) => {
-          setColumnSelected(e.target.value);
+          setIsLoading(true);
+          return setColumnSelected(e.target.value);
         }}
       >
         {columns.map((d: any) => {
@@ -43,7 +55,7 @@ const ChartContainer = () => {
         })}
       </select>
       {/* display data from chosen column */}
-      {columnSelected !== undefined ? (
+      {!isLoading ? (
         <DataChart ySelected={columnSelected} />
       ) : (
         <Spinner />

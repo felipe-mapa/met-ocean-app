@@ -15,6 +15,7 @@ import { useState, useEffect } from "react";
 import { eachDayOfInterval, format } from "date-fns";
 
 import { Colors } from "../Layout/Colors";
+import { Typography } from "@material-ui/core";
 
 const DataChart = (props: any) => {
   // get selectors from store
@@ -55,6 +56,7 @@ const DataChart = (props: any) => {
     setMeasurement(newMeasurement);
   }, [props.ySelected, columns, hourlyData]);
 
+  // set X axis dates for Bottom chart
   useEffect(() => {
     if (dataSelected.length > 0) {
       const newZoomValue = eachDayOfInterval({
@@ -68,12 +70,13 @@ const DataChart = (props: any) => {
   return (
     <React.Fragment>
       {/* TOP CHART */}
+      <Typography variant="h6">Main Chart</Typography>
       <VictoryChart
         theme={VictoryTheme.material}
         width={550}
         height={250}
         padding={{ left: 80, top: 20, right: 20, bottom: 50 }}
-        domainPadding={{ y: 10, x: 5 }}
+        domainPadding={{ y: 10, x: 10 }}
         style={{ parent: { width: "90%", margin: "0 auto" } }}
         scale={{ x: "time" }}
         containerComponent={
@@ -135,6 +138,7 @@ const DataChart = (props: any) => {
       </VictoryChart>
 
       {/* BOTTOM CHART */}
+      <Typography variant="h6">Support Chart</Typography>
       <VictoryChart
         width={600}
         height={90}
@@ -167,10 +171,6 @@ const DataChart = (props: any) => {
             data: { stroke: Colors.primary, fill: Colors.primary },
           }}
           data={dataSelected}
-          animate={{
-            duration: 1000,
-            onLoad: { duration: 500 },
-          }}
         />
       </VictoryChart>
     </React.Fragment>
