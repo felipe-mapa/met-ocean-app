@@ -12,7 +12,7 @@ import {
 } from "victory";
 import { useSelector, RootStateOrAny } from "react-redux";
 import { useState, useEffect } from "react";
-import { eachDayOfInterval } from "date-fns";
+import { eachDayOfInterval, format } from "date-fns";
 
 import { Colors } from "../Layout/Colors";
 
@@ -49,6 +49,8 @@ const DataChart = (props: any) => {
     });
     setDataSelected(newData);
 
+
+
     // set measurement of selected column
     const newMeasurement = columns.find((c: any) => c.name === props.ySelected)
       .measurement;
@@ -72,12 +74,15 @@ const DataChart = (props: any) => {
         theme={VictoryTheme.material}
         width={550}
         height={300}
+        padding={{left: 80, top: 20, right: 20, bottom: 50}}
+        domainPadding={{ y: 10 }}
         style={{ parent: { width: "90%", margin: "0 auto" }}}
         scale={{ x: "time" }}
         containerComponent={
           <VictoryZoomContainer
             responsive={true}
             zoomDimension="x"
+            downsample
             zoomDomain={selectedDomain}
             onZoomDomainChange={(domain: any) => setSelectedDomain(domain)}
           />
@@ -101,10 +106,27 @@ const DataChart = (props: any) => {
         <VictoryScatter
           size={3}
           labels={({ datum }) => {
-            const label = parseFloat(datum.y) / 100;
+            const data = parseFloat(datum.y) / 100;
+            const date = format(datum.x, 'PPp')
 
-            return `${label} ${measurement}`;
+            return `${data} ${measurement} \n ${date}`;
           }}
+          events={[{
+            target: "data",
+            eventHandlers: {
+              onClick: () => {
+                return [
+                  {
+                    target: "data",
+                    mutation: (props) => {
+                      const fill = props.style && props.style.fill;
+                      return fill === Colors.primary ? null : { style: { fill: Colors.primary } };
+                    }
+                  }
+                ];
+              }
+            }
+          }]}
           labelComponent={<VictoryTooltip />}
           data={dataSelected}
         />
@@ -117,6 +139,7 @@ const DataChart = (props: any) => {
         scale={{ x: "time" }}
         style={{ parent: { width: "90%", margin: "0 auto" } }}
         padding={{ top: 0, left: 50, right: 50, bottom: 30 }}
+        domainPadding={{ y: 5 }}
         containerComponent={
           <VictoryBrushContainer
             responsive={true}
