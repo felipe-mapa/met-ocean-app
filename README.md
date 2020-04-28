@@ -17,6 +17,11 @@ Open another terminal tab and run backend server.
 $ php -S 127.0.0.1:8000
 ```
 
+To run frontend server.
+```
+$ npm run start
+```
+
 To build the app.
 ```
 $ npm run build
