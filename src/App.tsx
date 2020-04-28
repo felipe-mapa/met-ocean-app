@@ -1,23 +1,21 @@
 import React, { useEffect, useState } from "react";
-import "./App.css";
 import { useSelector, RootStateOrAny, useDispatch } from "react-redux";
+import { Container,} from "@material-ui/core";
 
+import "./App.css";
 import * as actions from "./store/metoceanAction";
-import DataChart from "./components/DataChart";
+import ChartContainer from "./containers/ChartContainer";
 import Spinner from "./Layout/Spinner/Spinner";
+import Header from "./components/Header";
 
-function App() {
+const App = () => {
   // get selectors from store
   const hourlyData = useSelector(
     (state: RootStateOrAny) => state.metocean.hourlyData.data
   );
-  const columns = useSelector(
-    (state: RootStateOrAny) => state.metocean.columns.data
-  );
 
   // set states
   const [isLoading, setIsLoading] = useState(true);
-  const [columnSelected, setColumnSelected] = useState<string>();
 
   // fetch all data
   const dispatch = useDispatch();
@@ -30,42 +28,22 @@ function App() {
   useEffect(() => {
     if (hourlyData !== undefined) {
       setIsLoading(false);
-      setColumnSelected(columns[0].name);
     }
-  }, [hourlyData, columns]);
+  }, [hourlyData]);
 
   return (
-    <div className="App">
-      {!isLoading ? (
-        <div>
-          {/* select column data */}
-          <select
-            value={columnSelected}
-            onChange={(e) => {
-              setColumnSelected(e.target.value);
-            }}
-          >
-            {columns.map((d: any) => {
-              if (d.name !== "time") {
-                return (
-                  <option key={d.name} value={d.name}>
-                    {d.name} - {d.description}
-                  </option>
-                );
-              } else {
-                return null;
-              }
-            })}
-          </select>
-          {/* display data from chosen column */}
-          <DataChart ySelected={columnSelected} />
-        </div>
-      ) : (
-        // display a loader if data is not loaded
-        <Spinner />
-      )}
-    </div>
+    <React.Fragment>
+      <Header />
+      <Container maxWidth="md" className="App">
+        {!isLoading ? (
+          <ChartContainer />
+        ) : (
+          // display a loader if data is not loaded
+          <Spinner />
+        )}
+      </Container>
+    </React.Fragment>
   );
-}
+};
 
 export default App;

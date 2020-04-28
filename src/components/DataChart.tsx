@@ -71,7 +71,7 @@ const DataChart = (props: any) => {
       <VictoryChart
         theme={VictoryTheme.material}
         width={550}
-        height={300}
+        height={250}
         padding={{ left: 80, top: 20, right: 20, bottom: 50 }}
         domainPadding={{ y: 10, x: 5 }}
         style={{ parent: { width: "90%", margin: "0 auto" } }}
